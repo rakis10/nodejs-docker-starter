@@ -7,7 +7,7 @@ WORKDIR /app
 COPY init.sql /app/init.sql
 
 # Install sqlite3
-RUN apk add --no-cache sqlite
+# RUN apk add --no-cache sqlite
 
 # TODO
 # Run the SQL file against the database file (replace 'your_database.db' with your actual filename)
