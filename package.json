@@ -27,7 +27,10 @@
   },
   "homepage": "https://github.com/DavideViolante/nodejs-docker-starter#readme",
   "dependencies": {
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.9",
     "express": "^4.18.2",
+    "fs": "^0.0.1-security",
     "sqlite3": "^5.1.7"
   },
   "devDependencies": {
