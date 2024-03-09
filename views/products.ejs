@@ -2,39 +2,28 @@
 <html>
 <head>
     <title>Products</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@3.2.19/dist/tailwind.min.css"> -->
     <script src="https://cdn.jsdelivr.net/npm/htmx.org@1.7.0"></script>
 </head>
-<body class="bg-gradient-to-r from-pink-500 to-purple-500">
+<body class="bg-gradient-to-r from-pink-500 to-purple-500 h-screen">
+    <!-- make home btn to index -->
+    <a href="/" class="text-white text-2xl font-bold  border-gray-300 rounded-lg  bg-gradient-to-r from-violet-500 to-purple-500 p-4 ">Home 🏠</a>
+   
     <div class="flex flex-col items-center justify-center py-5">
         <h1 class="text-4xl font-bold mb-8 text-white">Products ❤️</h1>
-        <div class="flex flex-wrap justify-center">
-
-            <% products.forEach((product) => { %>
-            <div class="m-4 p-4 bg-white rounded-lg shadow-lg">
-                <h2 class="text-xl font-bold mb-2"><%= product.name %></h2>
-                <p class="text-gray-600"><%= product.description %></p>
-                <p class="text-gray-600">Price: $<%= product.price %></p>
-                <a class="text-blue-500 hover:text-blue-700" href="/products/<%= product.id %>">View Details</a>
-                <a class="text-blue-500 hover:text-blue-700" hx-get="/products/<%= product.id %>/edit" hx-target="#edit-product" hx-swap="outerHTML">Edit</a>
-                <form method="POST" action="/products/<%= product.id %>" hx-delete hx-target="#products" hx-swap="outerHTML">
-                    <button type="submit" class="text-red-500 hover:text-red-700">Delete</button>
-                </form>
-            </div>
-            <% }); %>
+        
+  <!-- <div   > -->
+        <div id="products" class="flex flex-row justify-center" hx-get="/products/data" hx-trigger="load, prodFetch" hx-target="#products" hx-swap="innerHTML">
         </div>
-        <!-- <h1>htmx</h1> -->
-        <div id="edit-product"></div>
-<!-- 
-        <div id="products" hx-get="/products" hx-trigger="revealed" hx-target="#products" hx-swap="innerHTML">
-        </div> -->
-
-        <form hx-post="/products" hx-target="#products" hx-swap="innerHTML" class="mt-8">
+  <!-- </div> -->
+        <form hx-post="/products/" hx-target="#products" class="mt-8 bg-white rounded-lg p-7 shadow-md" >
             <div class="flex flex-col space-y-2">
                 <label for="name" class="font-bold text-gray-700">Name:</label>
                 <input type="text" name="name" id="name" class="px-3 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-blue-500 focus:ring-2">
-                <label for="description" class="font-bold text-gray-700">Description:</label>
-                <textarea name="description" id="description" rows="4" class="px-3 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-blue-500 focus:ring-2"></textarea>
+                <label for="category" class="font-bold text-gray-700">Category:</label>
+                <textarea name="category" id="category" rows="4" class="px-3 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-blue-500 focus:ring-2"></textarea>
                 <label for="price" class="font-bold text-gray-700">Price:</label>
                 <input type="number" name="price" id="price" step="0.01" class="px-3 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-blue-500 focus:ring-2">
                 <button type="submit" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700">

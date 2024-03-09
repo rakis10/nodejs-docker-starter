@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/htmx.org@1.7.0"></script>
+
+</head>
+<body>
+   <!-- create table id and name columns with edit and delete btn -->
+   <table class="table-auto w-full bg-white rounded-lg">
+    <thead>
+        <tr>
+            <th class="px-4 py-2">ID</th>
+            <th class="px-4 py-2">Name</th>
+            <th class="px-4 py-2">Actions</th>
+        </tr>
+    </thead>
+    <tbody id="category">
+        <% categories.forEach((category) => { %>
+        <tr>
+            <td class="border px-4 py-2"><%= category.id %></td>
+            <td class="border px-4 py-2"><%= category.name %></td>
+            <td class="border px-4 py-2">
+                <button class="text-blue-500 hover:text-blue-700" hx-get="/category/edit/<%= category.id %>" hx-target="#edit-category">
+                    Edit
+                </button>
+                <button class="text-red-500 ms-2 hover:text-red-700" hx-delete="/category/<%= category.id %>" hx-target="#category">
+                    Delete
+                </button>
+            </td>
+        </tr>
+        <% }) %>
+    </tbody>
+</table>
+
+
+</body>
+</html>

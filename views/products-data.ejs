@@ -1,0 +1,18 @@
+<div id="edit-product"> </div>
+<% products.forEach((product) => { %>
+  <div class="m-4 p-4 bg-white rounded-lg shadow-lg">
+        <h2 class="text-xl font-bold mb-2"><%= product.name %></h2>
+        <p class="text-violet-600"><%= product.description %></p>
+        <p class="text-violet-600 font-bold"><%= product.category %></p>
+        <p class="text-gray-600">Price: $<%= product.price %></p>
+        <a class="text-blue-500 hover:text-blue-700" href="/products/<%= product.id %>">View Details</a>
+        <button class="text-blue-500 hover:text-blue-700" hx-get="/products/edit/<%= product.id %>" hx-target="#edit-product">
+            Edit 
+          </button>
+        <!-- <a class="text-blue-500 hover:text-blue-700" hx-get="/products/<%= product.id %>/edit" hx-target="#edit-product" hx-swap="outerHTML">Edit</a> -->
+        <button hx-delete="/products/<%= product.id %>" hx-target="this">
+            Delete 
+          </button>
+    </div>
+
+    <% }); %>

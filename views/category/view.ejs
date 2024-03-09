@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/htmx.org@1.7.0"></script>
+
+</head>
+<body class="bg-gradient-to-r from-pink-500 to-purple-500 h-screen">>
+    <!-- create tailwind TABLE for categories id and name -->
+    <div class="flex flex-col items-center justify-center py-5">
+        <h1 class="text-4xl font-bold mb-8 text-white">Category ❤️</h1>
+        <div id="category" class="flex flex-row justify-center" hx-get="/category/data" hx-trigger="load" hx-target="#category" hx-swap="innerHTML">
+        </div>
+        <form hx-post="/category/" hx-target="#category" class="mt-8 bg-white rounded-lg p-7 shadow-md" >
+            <div class="flex flex-col space-y-2">
+                <label for="name" class="font-bold text-gray-700">Name:</label>
+                <input type="text" name="name" id="name" class="px-3 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-blue-500 focus:ring-2">
+                <button type="submit" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700">
+                    Create Category
+                </button>
+            </div>
+        </form>
+</body>
+</html>

@@ -1,7 +1,23 @@
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('./db.sqlite'); // Replace with your database path
-
+async function selectProducts (){
+  const products = await new Promise((resolve, reject) => {
+    db.all('SELECT * FROM product', (err, rows) => {
+      if (err) reject(err);
+      resolve(rows);
+    });
+  });
+  return products;
+}
 module.exports = {
+  getProductsData: async (req, res) => {
+    try {
+      res.render('products-data.ejs', { products: await selectProducts()});
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('Error retrieving products');
+    }
+  },
   getProducts: async (req, res) => {
     try {
       const products = await new Promise((resolve, reject) => {
@@ -10,7 +26,6 @@ module.exports = {
           resolve(rows);
         });
       });
-
       res.render('products.ejs', { products });
     } catch (err) {
       console.error(err);
@@ -42,20 +57,51 @@ module.exports = {
   createProduct: async (req, res) => {
     try {
       const payload = req.body;
+      // console.log(payload)
+      
       const newProduct = await new Promise((resolve, reject) => {
-        db.run('INSERT INTO product (name, status, category, price) VALUES (?, ?, ?, ?)', payload, (err) => {
+        db.run('INSERT INTO product (name, category, price) VALUES (?, ?, ?)', Object.values(payload), (err) => {
           if (err) reject(err);
           resolve(db.lastInsertRowid); // Get the ID of the inserted product
         });
       });
-
-      res.status(201).json({ id: newProduct });
+      try {
+        const products = await new Promise((resolve, reject) => {
+          db.all('SELECT * FROM product', (err, rows) => {
+            if (err) reject(err);
+            resolve(rows);
+          });
+        });
+        res.render('products-data.ejs', { products });
+      } catch (err) {
+        console.error(err);
+        res.status(500).send('Error retrieving products');
+      }
     } catch (err) {
       console.error(err);
       res.status(400).send('Error creating product');
     }
   },
+  getEditProduct: async (req, res) => {
+    try {
+      const productId = req.params.id;
+      const product = await new Promise((resolve, reject) => {
+        db.all('SELECT * FROM product WHERE id = ?', [productId], (err, rows) => {
+          if (err) reject(err);
+          resolve(rows);
+        });
+      });
 
+      if (!product.length) {
+        return res.status(404).send('Product not found');
+      }
+
+      res.render('edit-product.ejs', { product: product[0] });
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('Error retrieving product');
+    }
+  },
   updateProduct: async (req, res) => {
     try {
       const productId = req.params.id;
@@ -72,11 +118,18 @@ module.exports = {
         });
       });
 
-      if (!updatedProduct) {
-        return res.status(404).send('Product not found');
+      try {
+        const products = await new Promise((resolve, reject) => {
+          db.all('SELECT * FROM product', (err, rows) => {
+            if (err) reject(err);
+            resolve(rows);
+          });
+        });
+        res.render('products-data.ejs', { products });
+      } catch (err) {
+        console.error(err);
+        res.status(500).send('Error retrieving products');
       }
-
-      res.json({ message: 'Product updated successfully' });
     } catch (err) {
       console.error(err);
       res.status(500).send('Error updating product');
@@ -93,7 +146,8 @@ module.exports = {
         });
       });
 
-      res.status(204).send();
+      res.setHeader('HX-Trigger', 'prodFetch');
+      res.status(200).send({ message: 'Product deleted successfully'});
     } catch (err) {
       console.error(err);
       res.status(500).send('Error deleting product');
