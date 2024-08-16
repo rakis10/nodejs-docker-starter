@@ -2,6 +2,7 @@ const express = require('express')
 const app = express()
 const bodyParser = require('body-parser');
 const sqlite3 = require('sqlite3').verbose(); // Import SQLite module
+const path = require('path');
 
 // Parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -24,7 +25,9 @@ const productRoutes = require('./routes/products');
 const categoryRoutes = require('./routes/category');
 app.use("/products", productRoutes);
 app.use("/category", categoryRoutes);
-app.get('/', (req, res) => res.render('index.ejs'))
+
+
+
 app.get('/quotes', (req, res) => {
     // Execute a query to retrieve data from the 'quotes' table
     db.all('SELECT * FROM quotes', (err, rows) => {
@@ -35,4 +38,11 @@ app.get('/quotes', (req, res) => {
         res.json(rows); // Send the data as JSON
     });
 });
+
+//react bude musiet byt v roote alebo vyskusat vite
+// app.use(express.static(path.join(__dirname, 'client/build')));
+
+app.get('/', (req, res) => res.render('index.ejs'))
+app.use('/react',express.static(path.join(__dirname, 'client/dist')));
+
 module.exports = app;
