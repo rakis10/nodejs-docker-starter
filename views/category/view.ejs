@@ -8,8 +8,8 @@
     <script src="https://cdn.jsdelivr.net/npm/htmx.org@1.7.0"></script>
 
 </head>
-<body class="bg-gradient-to-r from-pink-500 to-purple-500 h-screen">>
-    <!-- create tailwind TABLE for categories id and name -->
+<body class="bg-gradient-to-r from-pink-500 to-purple-500 h-screen">
+    <a href="/" class="text-white text-2xl font-bold  border-gray-300 rounded-lg  bg-gradient-to-r from-violet-500 to-purple-500 p-4 ">Home 🏠</a>
     <div class="flex flex-col items-center justify-center py-5">
         <h1 class="text-4xl font-bold mb-8 text-white">Category ❤️</h1>
         <div id="category" class="flex flex-row justify-center" hx-get="/category/data" hx-trigger="load" hx-target="#category" hx-swap="innerHTML">
